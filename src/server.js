@@ -4,11 +4,9 @@ import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHt
 import express from 'express';
 import http from 'http';
 import cors from 'cors';
-
-
 import { typeDefs } from './schema.js';
 import { resolvers } from './resolver.js';
-import db from '../_db.js'
+
 
 // Required logic for integrating with Express
 const app = express();
@@ -44,4 +42,5 @@ app.use(
 
 // Modified server startup
 await new Promise((resolve) => httpServer.listen({ port: 4000 }, resolve));
-console.log(`🚀 Server ready at http://localhost:4000/graphql`);
+
+console.log('🚀 Server ready at http://localhost:4000/graphql');

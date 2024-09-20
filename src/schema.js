@@ -26,6 +26,9 @@ export const typeDefs = `#graphql
     #     game(id: ID!): Game
     #     authors: [Author]
     # }
+    
+
+    # For demo purposes
     type Game {
         game_id: ID!
         title: String!
@@ -39,7 +42,7 @@ export const typeDefs = `#graphql
         game(game_id: ID!): Game
     }
 
-`
+`;
 
 // int, float, string, boolean, ID (key of the data objects)
 // by add ! to indicate that field is required
