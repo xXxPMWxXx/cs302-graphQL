@@ -34,11 +34,11 @@ export const resolvers = {
             const { error } = await isTokenValid(token);
             // Return error if token is invalid
             if (error) {
-                throw new AuthenticationError(error);
+                throw new AuthenticationError('Invalid token');
             }
             // If token is valid, fetch games data from REST API
             try {
-                const response = await fetch('http://localhost:30000/games');
+                const response = await fetch('http://3.15.201.85:30000/games');
                 const data = await response.json();
                 return data.data.games;
             } catch (error) {
@@ -46,9 +46,16 @@ export const resolvers = {
                 throw new Error('Failed to fetch games data from REST API');
             }
         },
-        async game(_, args) {
+        async game(_, args, { headers }) {
+            const token = headers.authorization;
+            const { error } = await isTokenValid(token);
+            // Return error if token is invalid
+            if (error) {
+                throw new AuthenticationError('Invalid token');
+            }
+
             try {
-                const response = await fetch('http://localhost:30000/games');
+                const response = await fetch('http://3.15.201.85:30000/games');
                 const data = await response.json();
                 const games = data.data.games; // Get the list of games
                 return games.find(game => game.game_id === Number(args.game_id)); // as the data pass in is String and the data is number
