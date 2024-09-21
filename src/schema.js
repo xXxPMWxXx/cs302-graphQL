@@ -36,6 +36,19 @@ export const typeDefs = `#graphql
         price: Float!
         stock: Int!
     }
+
+    type User {
+        _id: ID!
+        first_name: String
+        last_name: String
+        email: String!
+        image: String
+        about_me: String
+        created_at: String!
+        updated_at: String!
+
+    }
+
     # entry points for the user
     type Query {
         games: [Game]

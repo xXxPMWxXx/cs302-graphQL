@@ -1,13 +1,29 @@
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import jwksClient from 'jwks-rsa';
-import AuthenticationError from 'apollo-server-errors';
+import axios from 'axios';
+import { AuthenticationError } from 'apollo-server-errors';
 dotenv.config();
 
 const client = jwksClient({
   jwksUri: `${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`
 });
 
+
+async function fetchUserInfo(token) {
+  try {
+    // Call Auth0's userinfo endpoint
+    const response = await axios.get('https://dev-iu4kzoymxgg0vztn.us.auth0.com/userinfo', {
+      headers: {
+        Authorization: token
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching user info:', error);
+    return callback(error);
+  }
+}
 
 function getKey(header, callback) {
   client.getSigningKey(header.kid, function (error, key) {
@@ -24,9 +40,12 @@ async function isTokenValid(token) {
   if (!token) {
     return { error: 'No token provided' };  // Handle empty token case here
   }
-    
+
   if (token) {
     const bearerToken = token.split(' ');
+
+    // const decodedToken = jwt.decode(bearerToken[1], { complete: true });  // `complete: true` includes header and signature
+    // console.log('Decoded Token:', decodedToken);  // This will log the fields in the token
     const result = new Promise((resolve) => {
       jwt.verify(
         bearerToken[1],
@@ -53,6 +72,8 @@ async function isTokenValid(token) {
 // New function to handle token validation in resolvers
 export const validateToken = async (token) => {
   const { error } = await isTokenValid(token);
+  const user = await fetchUserInfo(token);
+  // console.log(user);
   if (error) {
     throw new AuthenticationError('Invalid token');
   }

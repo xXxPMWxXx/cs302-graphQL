@@ -53,3 +53,4 @@ coverage/
 # Express cache
 .cache/
 package-lock.json
+.DS_Store
