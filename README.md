@@ -9,6 +9,10 @@ curl --request POST \
 ## To Run static code analysis tool 
 - `npx eslint .`
 
+## Login to Apollo Server to access saved query
+- email: `pratahouse.cs302@gmail.com`
+- password: `Pratahouse302`
+
 ## .env variable
 - `AUTH0_DOMAIN=https://dev-iu4kzoymxgg0vztn.us.auth0.com`
 - `API_IDENTIFIER=http://localhost:4000/`
