@@ -1,12 +1,12 @@
 import { validateToken } from './services/authService.js';
 import { fetchGames, fetchGameById } from './services/gameService.js';
+import { fetchUsers, createUser } from './services/userService.js';
 
 export const resolvers = {
   // for local DB source
   // Query: {
   //   reviews() {
   //     return db.reviews
-  //   },
   //   games() {
   //     return db.games
   //   },
@@ -39,8 +39,25 @@ export const resolvers = {
       await validateToken(token);
 
       return fetchGameById(args.game_id);
+    },
+    async users(_, __, { headers }) {
+      const token = headers.authorization;
+      await validateToken(token);
+
+      return fetchUsers();
+    }
+  },
+  Mutation: {
+    async createUser(_, { first_name, last_name, email, image, about_me, email_preferences }) {
+      const newUser = {
+        first_name,
+        last_name,
+        email,
+        image,
+        about_me,
+        email_preferences
+      };
+      return await createUser(newUser);
     }
   }
-
-
 };

@@ -8,3 +8,8 @@ curl --request POST \
 
 ## To Run static code analysis tool 
 - `npx eslint .`
+
+## .env variable
+- `AUTH0_DOMAIN=https://dev-iu4kzoymxgg0vztn.us.auth0.com`
+- `API_IDENTIFIER=http://localhost:4000/`
+- `USER_URL=http://localhost:30100`

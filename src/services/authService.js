@@ -1,8 +1,8 @@
-import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import jwksClient from 'jwks-rsa';
 import axios from 'axios';
 import { AuthenticationError } from 'apollo-server-errors';
+import dotenv from 'dotenv';
 dotenv.config();
 
 const client = jwksClient({
@@ -13,7 +13,7 @@ const client = jwksClient({
 async function fetchUserInfo(token) {
   try {
     // Call Auth0's userinfo endpoint
-    const response = await axios.get('https://dev-iu4kzoymxgg0vztn.us.auth0.com/userinfo', {
+    const response = await axios.get(`${process.env.AUTH0_DOMAIN}/userinfo`, {
       headers: {
         Authorization: token
       }
@@ -25,6 +25,7 @@ async function fetchUserInfo(token) {
   }
 }
 
+// To Check if the token is valid with the public key
 function getKey(header, callback) {
   client.getSigningKey(header.kid, function (error, key) {
     if (error) {
@@ -72,7 +73,7 @@ async function isTokenValid(token) {
 // New function to handle token validation in resolvers
 export const validateToken = async (token) => {
   const { error } = await isTokenValid(token);
-  const user = await fetchUserInfo(token);
+  // const user = await fetchUserInfo(token);
   // console.log(user);
   if (error) {
     throw new AuthenticationError('Invalid token');

@@ -44,15 +44,27 @@ export const typeDefs = `#graphql
         email: String!
         image: String
         about_me: String
-        created_at: String!
-        updated_at: String!
-
+        email_preferences: Boolean
+        created_at: String
+        updated_at: String
     }
 
     # entry points for the user
     type Query {
         games: [Game]
         game(game_id: ID!): Game
+        users: [User]
+    }
+
+    type Mutation {
+    createUser(
+        first_name: String
+        last_name: String
+        email: String!
+        image: String
+        about_me: String
+        email_preferences: Boolean
+    ): User
     }
 
 `;
