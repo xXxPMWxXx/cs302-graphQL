@@ -2,6 +2,19 @@ import { validateToken } from './services/authService.js';
 import { fetchGames, fetchGameById } from './services/gameService.js';
 import { fetchUsers, createUser } from './services/userService.js';
 
+// Wrapper for AuthService
+const withAuth = (resolver) => {
+  return async (parent, args, context, info) => {
+    const token = context.headers.authorization;
+    if (token) {
+      await validateToken(token);
+    } else {
+      throw new Error('Authorization token is required');
+    }
+    return resolver(parent, args, context, info);
+  };
+};
+
 export const resolvers = {
   // for local DB source
   // Query: {
@@ -27,28 +40,34 @@ export const resolvers = {
   // }
   Query: {
     // Check if user is authenticated
-    // (parent, args, {headers})
-    async games(_, __, { headers }) {
-      const token = headers.authorization;
-      await validateToken(token);
-
+    // (parent, args)
+    games: withAuth(async () => {
       return fetchGames();
-    },
-    async game(_, args, { headers }) {
-      const token = headers.authorization;
-      await validateToken(token);
-
+    }),
+    // Sample for without authentication
+    game: async (_, args) => {
       return fetchGameById(args.game_id);
     },
-    async users(_, __, { headers }) {
-      const token = headers.authorization;
-      await validateToken(token);
-
+    users: withAuth(async () => {
       return fetchUsers();
-    }
+    }),
   },
   Mutation: {
-    async createUser(_, { first_name, last_name, email, image, about_me, email_preferences }) {
+    // async createUser(_, { first_name, last_name, email, image, about_me, email_preferences }) {
+    //   const token = headers.authorization;
+    //   await validateToken(token);
+
+    //   const newUser = {
+    //     first_name,
+    //     last_name,
+    //     email,
+    //     image,
+    //     about_me,
+    //     email_preferences
+    //   };
+    //   return await createUser(newUser);
+    // }
+    createUser: withAuth(async (_, { first_name, last_name, email, image, about_me, email_preferences }) => {
       const newUser = {
         first_name,
         last_name,
@@ -58,6 +77,6 @@ export const resolvers = {
         email_preferences
       };
       return await createUser(newUser);
-    }
+    }),
   }
 };
