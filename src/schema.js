@@ -54,6 +54,7 @@ export const typeDefs = `#graphql
         games: [Game]
         game(game_id: ID!): Game
         users: [User]
+        user(email: String!): User
     }
 
     type Mutation {
