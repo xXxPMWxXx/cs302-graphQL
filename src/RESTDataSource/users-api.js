@@ -1,19 +1,13 @@
 import { RESTDataSource } from '@apollo/datasource-rest';
-import dotenv from 'dotenv';
-dotenv.config();
 
 export class UsersAPI extends RESTDataSource {
     baseURL = `${process.env.USER_URL}/`;
+
     async getUser(email) {
         return this.get(`users/${encodeURIComponent(email)}`);
     }
-    async getUsers(limit = '10') {
-        const data = await this.get('users', {
-            params: {
-                per_page: limit.toString(), // all params entries should be strings,
-                order_by: 'updated_at', 
-            },
-        });
+    async getUsers() {
+        const data = await this.get('users');
         return data;
     }
     // POST

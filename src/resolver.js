@@ -50,12 +50,18 @@ export const resolvers = {
         users: withAuth(async (_, __, { dataSources }) => {
             return dataSources.usersAPI.getUsers();
         }),
-        user: async (_, { email }, { dataSources }) => {
+        user: withAuth(async (_, { email }, { dataSources }) => {
             return dataSources.usersAPI.getUser(email);
-        },
+        }),
+        recipes: withAuth(async (_, __, { dataSources }) => {
+            return dataSources.recipesAPI.getRecipes();
+        }),
+        recipe: withAuth(async (_, {_id}, { dataSources }) => {
+            return dataSources.recipesAPI.getRecipe(_id);
+        }),
     },
     Mutation: {
-        createUser: withAuth(async (_, { first_name, last_name, email, image, about_me, email_preferences },{ dataSources }) => {
+        createUser: withAuth(async (_, { first_name, last_name, email, image, about_me, email_preferences },{ dataSources,cache }) => {
             const newUser = {
                 first_name,
                 last_name,
@@ -64,7 +70,31 @@ export const resolvers = {
                 about_me,
                 email_preferences
             };
+
+            const cacheKey = `httpcache:GET ${process.env.USER_URL}/users`; // clear the get all users cache
+            await cache.delete(cacheKey); 
             return dataSources.usersAPI.createUser(newUser);
+        }),
+        createRecipe: withAuth(async (_, { name, portion_size, cuisine_type, description, ingredients, steps, author, prep_time, cook_time, created_at, image }, { dataSources, cache }) => {
+            const newRecipe = {
+                name,
+                portion_size,
+                cuisine_type,
+                description,
+                ingredients,
+                steps,
+                author,
+                prep_time,
+                cook_time,
+                created_at,
+                image
+            };
+        
+            const cacheKey = `httpcache:GET ${process.env.RECIPE_URL}/recipes`; // clear the get all recipes cache
+            await cache.delete(cacheKey); 
+        
+            // Assuming dataSources.recipesAPI handles interaction with the database/API for recipes
+            return dataSources.recipesAPI.createRecipe(newRecipe);
         }),
     }
 };
