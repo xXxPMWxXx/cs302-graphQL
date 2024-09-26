@@ -7,8 +7,9 @@ import cors from 'cors';
 import { typeDefs } from './schema.js';
 import { resolvers } from './resolver.js';
 import { UsersAPI } from './RESTDataSource/users-api.js'; 
-import dotenv from 'dotenv';
 import { RecipesAPI } from './RESTDataSource/recipes-api.js';
+import { ReviewsAPI } from './RESTDataSource/reviews-api.js';
+import dotenv from 'dotenv';
 dotenv.config();
 
 // Required logic for integrating with Express
@@ -45,6 +46,7 @@ app.use(
                 dataSources: {
                     usersAPI: new UsersAPI({ cache }),
                     recipesAPI: new RecipesAPI({ cache }),
+                    reviewsAPI: new ReviewsAPI({ cache }),
                 },
             };
         },

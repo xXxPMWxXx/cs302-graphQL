@@ -6,6 +6,11 @@ export class UsersAPI extends RESTDataSource {
     async getUser(email) {
         return this.get(`users/${encodeURIComponent(email)}`);
     }
+
+    async getUserById(_id) {
+        return this.get(`users/id/${encodeURIComponent(_id)}`);
+    }
+
     async getUsers() {
         const data = await this.get('users');
         return data;

@@ -26,16 +26,6 @@ export const typeDefs = `#graphql
     #     game(id: ID!): Game
     #     authors: [Author]
     # }
-    
-
-    # For demo purposes
-    type Game {
-        game_id: ID!
-        title: String!
-        platform: String!
-        price: Float!
-        stock: Int!
-    }
 
     type User {
         _id: ID!
@@ -63,6 +53,7 @@ export const typeDefs = `#graphql
         prep_time: Int!
         steps: [Step!]!
         views: Int
+        reviews: [Review]
     }
 
     type Ingredient {
@@ -75,14 +66,24 @@ export const typeDefs = `#graphql
         image: String
     }
 
+    type Review {
+        _id: ID!
+        recipe: String!
+        author: User!
+        by: User!
+        comment: String
+        rating: Int!
+        created_at: String
+    }
+
     # entry points for the user
     type Query {
-        games: [Game]
-        game(game_id: ID!): Game
         users: [User]
         user(email: String!): User
+        userById(_id: ID!): User
         recipes: [Recipe]
         recipe(_id: ID!): Recipe
+        reviews(recipe_id: String!): [Review]
     }
 
     input IngredientInput {
@@ -117,6 +118,14 @@ export const typeDefs = `#graphql
         cook_time: Int,
         image: String
     ): Recipe
+
+    createReview(
+        recipe: String!,
+        author: String!,
+        by: String!,
+        comment: String,
+        rating: Int!
+    ): Review
     }
 
 `;

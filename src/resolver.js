@@ -1,5 +1,4 @@
 import { validateToken } from './utils/authService.js';
-import { fetchGames, fetchGameById } from './services/gameService.js';
 
 // Wrapper for AuthService
 const withAuth = (resolver) => {
@@ -15,43 +14,17 @@ const withAuth = (resolver) => {
 };
 
 export const resolvers = {
-    // for local DB source
-    // Query: {
-    //   reviews() {
-    //     return db.reviews
-    //   games() {
-    //     return db.games
-    //   },
-    //   authors() {
-    //     return db.authors
-    //   },
-    //   review(parent, args) { // args is the data user pass in 
-    //     return db.reviews.find(review => review.id === args.id);
-    //   },
-    //   game(_, args) { 
-    //     return db.games.find(game => game.id === args.id);
-    //   }
-    // },
-    // Game: { // this is to return reviews data when query game
-    //     reviews(parent) {
-    //         return db.reviews.filter(review => review.game_id === parent.id);
-    //     }
-    // }
     Query: {
     // Check if user is authenticated
     // (parent, args)
-        games: withAuth(async () => {
-            return fetchGames();
-        }),
-        // Sample for without authentication
-        game: async (_, args) => {
-            return fetchGameById(args.game_id);
-        },
         users: withAuth(async (_, __, { dataSources }) => {
             return dataSources.usersAPI.getUsers();
         }),
         user: withAuth(async (_, { email }, { dataSources }) => {
             return dataSources.usersAPI.getUser(email);
+        }),
+        userById: withAuth(async (_, { _id }, { dataSources }) => {
+            return dataSources.usersAPI.getUserById(_id);
         }),
         recipes: withAuth(async (_, __, { dataSources }) => {
             return dataSources.recipesAPI.getRecipes();
@@ -59,6 +32,22 @@ export const resolvers = {
         recipe: withAuth(async (_, {_id}, { dataSources }) => {
             return dataSources.recipesAPI.getRecipe(_id);
         }),
+        reviews: withAuth(async (_, {recipe_id}, { dataSources }) => {
+            return dataSources.reviewsAPI.getReviews(recipe_id);
+        }),
+    },
+    Recipe : { // To return from other data sources
+        reviews: async (parent,__,{ dataSources }) => {
+            return dataSources.reviewsAPI.getReviews(parent._id);
+        },
+    },
+    Review : { // To return from other data sources
+        author: async (parent,__,{ dataSources }) => {
+            return dataSources.usersAPI.getUserById(parent.author);
+        },
+        by: async (parent,__,{ dataSources }) => {
+            return dataSources.usersAPI.getUserById(parent.author);
+        },
     },
     Mutation: {
         createUser: withAuth(async (_, { first_name, last_name, email, image, about_me, email_preferences },{ dataSources,cache }) => {
@@ -92,9 +81,20 @@ export const resolvers = {
         
             const cacheKey = `httpcache:GET ${process.env.RECIPE_URL}/recipes`; // clear the get all recipes cache
             await cache.delete(cacheKey); 
-        
-            // Assuming dataSources.recipesAPI handles interaction with the database/API for recipes
             return dataSources.recipesAPI.createRecipe(newRecipe);
+        }),
+        createReview: withAuth(async (_, { recipe,author,by,comment,rating}, { dataSources, cache }) => {
+            const newReview = {
+                recipe,
+                author,
+                by,
+                comment,
+                rating,
+            };
+        
+            const cacheKey = `httpcache:GET ${process.env.RECIPE_URL}/recipes`; // clear the get all recipes cache
+            await cache.delete(cacheKey); 
+            return dataSources.reviewsAPI.createReview(newReview);
         }),
     }
 };
