@@ -9,22 +9,6 @@ const client = jwksClient({
     jwksUri: `${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`
 });
 
-
-async function fetchUserInfo(token) {
-    try {
-    // Call Auth0's userinfo endpoint
-        const response = await axios.get(`${process.env.AUTH0_DOMAIN}/userinfo`, {
-            headers: {
-                Authorization: token
-            }
-        });
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching user info:', error);
-        return callback(error);
-    }
-}
-
 // To Check if the token is valid with the public key
 function getKey(header, callback) {
     client.getSigningKey(header.kid, function (error, key) {
@@ -69,6 +53,21 @@ async function isTokenValid(token) {
         return result;
     }
 }
+
+export const fetchUserInfo = async (token) => {
+    try {
+    // Call Auth0's userinfo endpoint
+        const response = await axios.get(`${process.env.AUTH0_DOMAIN}/userinfo`, {
+            headers: {
+                Authorization: token
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching user info:', error);
+        return callback(error);
+    }
+};
 
 // New function to handle token validation in resolvers
 export const validateToken = async (token) => {

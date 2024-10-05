@@ -1,4 +1,4 @@
-import { validateToken } from './utils/authService.js';
+import { validateToken, fetchUserInfo } from './utils/authService.js';
 
 // Wrapper for AuthService
 const withAuth = (resolver) => {
@@ -17,15 +17,10 @@ export const resolvers = {
     Query: {
     // Check if user is authenticated
     // (parent, args)
-        users: withAuth(async (_, __, { dataSources }) => {
-            return dataSources.usersAPI.getUsers();
-        }),
-        user: withAuth(async (_, { email }, { dataSources }) => {
-            return dataSources.usersAPI.getUser(email);
-        }),
-        userById: withAuth(async (_, { _id }, { dataSources }) => {
+        hello: (_, { name }) => `Hello ${name}!`,
+        userById: async (_, { _id }, { dataSources }) => {
             return dataSources.usersAPI.getUserById(_id);
-        }),
+        },
         recipes: withAuth(async (_, __, { dataSources }) => {
             return dataSources.recipesAPI.getRecipes();
         }),
@@ -50,19 +45,9 @@ export const resolvers = {
         },
     },
     Mutation: {
-        createUser: withAuth(async (_, { first_name, last_name, email, image, about_me, email_preferences },{ dataSources,cache }) => {
-            const newUser = {
-                first_name,
-                last_name,
-                email,
-                image,
-                about_me,
-                email_preferences
-            };
-
-            const cacheKey = `httpcache:GET ${process.env.USER_URL}/users`; // clear the get all users cache
-            await cache.delete(cacheKey); 
-            return dataSources.usersAPI.createUser(newUser);
+        findOrCreateUser: withAuth(async (_, __,{ dataSources, headers}) => {
+            const user = await fetchUserInfo(headers.authorization);
+            return dataSources.usersAPI.findOrCreateUser(user);
         }),
         createRecipe: withAuth(async (_, { name, portion_size, cuisine_type, description, ingredients, steps, author, prep_time, cook_time, created_at, image }, { dataSources, cache }) => {
             const newRecipe = {
@@ -92,7 +77,7 @@ export const resolvers = {
                 rating,
             };
         
-            const cacheKey = `httpcache:GET ${process.env.RECIPE_URL}/recipes`; // clear the get all recipes cache
+            const cacheKey = `httpcache:GET ${process.env.RECIPE_URL}/reviews`; // clear the get all recipes cache
             await cache.delete(cacheKey); 
             return dataSources.reviewsAPI.createReview(newReview);
         }),

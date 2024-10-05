@@ -1,38 +1,10 @@
 export const typeDefs = `#graphql
-# below are for local DB
-    # type Game {
-    #     id: ID!
-    #     title: String!
-    #     platforms: [String!]!
-    #     reviews: [Review!] 
-    # }
-    # type Review {
-    #     id: ID!
-    #     content: String!
-    #     rating: Int!
-    #     game: Game!
-    # }
-    # type Author {
-    #     id: ID!
-    #     name: String!
-    #     verified: Boolean!
-    #     reviews: [Review!] 
-    # }
-    # # entry points for the user
-    # type Query {
-    #     reviews: [Review]
-    #     review(id: ID!): Review
-    #     games: [Game]
-    #     game(id: ID!): Game
-    #     authors: [Author]
-    # }
 
     type User {
         _id: ID!
         first_name: String
         last_name: String
         email: String!
-        image: String
         about_me: String
         email_preferences: Boolean
         created_at: String
@@ -78,8 +50,7 @@ export const typeDefs = `#graphql
 
     # entry points for the user
     type Query {
-        users: [User]
-        user(email: String!): User
+        hello(name: String): String!
         userById(_id: ID!): User
         recipes: [Recipe]
         recipe(_id: ID!): Recipe
@@ -97,33 +68,31 @@ export const typeDefs = `#graphql
     }
 
     type Mutation {
-    createUser(
+    # FE dont need pass any data, as the data will be get from Auth0 using the token
+    findOrCreateUser(
         first_name: String
         last_name: String
         email: String!
-        image: String
-        about_me: String
-        email_preferences: Boolean
     ): User
 
     createRecipe(
-        name: String!,
-        portion_size: Int,
-        cuisine_type: String,
-        description: String,
-        ingredients: [IngredientInput],
-        steps: [StepInput],
-        author: ID!,
-        prep_time: Int,
-        cook_time: Int,
+        name: String!
+        portion_size: Int
+        cuisine_type: String
+        description: String
+        ingredients: [IngredientInput]
+        steps: [StepInput]
+        author: ID!
+        prep_time: Int
+        cook_time: Int
         image: String
     ): Recipe
 
     createReview(
-        recipe: String!,
-        author: String!,
-        by: String!,
-        comment: String,
+        recipe: String!
+        author: String!
+        by: String!
+        comment: String
         rating: Int!
     ): Review
     }

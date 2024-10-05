@@ -1,4 +1,4 @@
-## To get the Auth0 token
+## To get the Auth0 token, this is to get token from Auth0 API, this token will not work for user method
 <pre>
 curl --request POST \
   --url https://dev-iu4kzoymxgg0vztn.us.auth0.com/oauth/token \
