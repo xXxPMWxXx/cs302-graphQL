@@ -177,8 +177,8 @@ const server = new ApolloServer({
 let testToken;
 const getToken = async () => {
     const response = await axios.post(`${process.env.AUTH0_DOMAIN}/oauth/token`, {
-        client_id: `${process.env.AUTHO_CLIENT_ID}`,
-        client_secret: `${process.env.AUTHO_CLIENT_SECRET}`,
+        client_id: `${process.env.AUTH0_CLIENT_ID}`,
+        client_secret: `${process.env.AUTH0_CLIENT_SECRET}`,
         audience: `${process.env.API_IDENTIFIER}`,
         grant_type: 'client_credentials'
     });
