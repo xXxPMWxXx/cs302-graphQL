@@ -6,14 +6,11 @@ curl --request POST \
   --data '{"client_id":"62pmKBHA4NLwlB1YiQv1wKd8JOCkRsri","client_secret":"KShZHULodLIBFXQXBx3CospZQBxhqKyGeCNFLr1EnegfMakE4pNApgodOvcRsqhq","audience":"http://localhost:4000/","grant_type":"client_credentials"}'
 </pre>
 
-## To Run static code analysis tool 
-- `npx eslint .`
+## To Run test
+- `npx eslint .` => static code analysis
+- `npm run test:coverage` => unit test and integration test with coverage
 
 ## Login to Apollo Server to access saved query
 - email: `pratahouse.cs302@gmail.com`
 - password: `Pratahouse302`
 
-## .env variable
-- `AUTH0_DOMAIN=https://dev-iu4kzoymxgg0vztn.us.auth0.com`
-- `API_IDENTIFIER=http://localhost:4000/`
-- `USER_URL=http://localhost:30100`

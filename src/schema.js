@@ -50,7 +50,6 @@ export const typeDefs = `#graphql
 
     # entry points for the user
     type Query {
-        hello(name: String): String!
         userById(_id: ID!): User
         recipes: [Recipe]
         recipe(_id: ID!): Recipe

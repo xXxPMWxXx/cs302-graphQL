@@ -17,10 +17,9 @@ export const resolvers = {
     Query: {
     // Check if user is authenticated
     // (parent, args)
-        hello: (_, { name }) => `Hello ${name}!`,
-        userById: async (_, { _id }, { dataSources }) => {
+        userById: withAuth(async (_, { _id }, { dataSources }) => {
             return dataSources.usersAPI.getUserById(_id);
-        },
+        }),
         recipes: withAuth(async (_, __, { dataSources }) => {
             return dataSources.recipesAPI.getRecipes();
         }),
