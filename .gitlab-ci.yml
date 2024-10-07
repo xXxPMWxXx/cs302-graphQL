@@ -7,6 +7,11 @@ stages:
 eslint:
   stage: Static Analysis
   image: node:20-slim
+  variables:
+    AUTH0_DOMAIN: $AUTH0_DOMAIN
+    AUTHO_CLIENT_ID: $AUTHO_CLIENT_ID
+    AUTHO_CLIENT_SECRET: $AUTHO_CLIENT_SECRET
+    API_IDENTIFIER: $API_IDENTIFIER
   script:
     - npm install
     - npx eslint .
