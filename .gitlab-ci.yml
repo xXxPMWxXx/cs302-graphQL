@@ -36,10 +36,18 @@ mock-integration-tests:
 release-image:
   stage: Release
   image: docker:27.1.1
+  variables:
+    AUTH0_DOMAIN: $AUTH0_DOMAIN
+    AUTHO_CLIENT_ID: $AUTHO_CLIENT_ID
+    AUTHO_CLIENT_SECRET: $AUTHO_CLIENT_SECRET
+    API_IDENTIFIER: $API_IDENTIFIER
+    USER_URL: $USER_URL
+    RECIPE_URL: $RECIPE_URL
+    REVIEW_URL: $REVIEW_URL
   services:
     - docker:27.1.1-dind
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
-    - docker build --pull -t "$CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:$CI_COMMIT_SHA" .
+    - docker build --pull -f dev.dockerfile -t "$CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:$CI_COMMIT_SHA" .
     - docker push "$CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:$CI_COMMIT_SHA"
