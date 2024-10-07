@@ -1,0 +1,26 @@
+stages:
+  - Static Analysis
+  - Test
+ 
+
+# Static Analysis Stage
+eslint:
+  stage: Static Analysis
+  image: node:20-slim
+  script:
+    - npm install
+    - npx eslint .
+  allow_failure: false 
+  only:
+    - main
+
+# Test Stage
+mock-integration-tests:
+  stage: Test
+  image: node:20-slim
+  script:
+    - npm install
+    - npm run test:coverage
+  allow_failure: false 
+  only:
+    - main
