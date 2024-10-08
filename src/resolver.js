@@ -29,10 +29,19 @@ export const resolvers = {
         reviews: withAuth(async (_, {recipe_id}, { dataSources }) => {
             return dataSources.reviewsAPI.getReviews(recipe_id);
         }),
+        getRecipeRating: withAuth(async (_, {recipe_id}, { dataSources }) => {
+            return dataSources.reviewsAPI.getRecipeRating(recipe_id);
+        }),
     },
     Recipe : { // To return from other data sources
         reviews: async (parent,__,{ dataSources }) => {
             return dataSources.reviewsAPI.getReviews(parent._id);
+        },
+        author: async (parent,__,{ dataSources }) => {
+            return dataSources.usersAPI.getUserById(parent.author);
+        },
+        rating: async (parent, _, { dataSources }) => {
+            return dataSources.reviewsAPI.getRecipeRating(parent._id);
         },
     },
     Review : { // To return from other data sources

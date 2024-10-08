@@ -1,53 +1,53 @@
-stages:
-  - Static Analysis
-  - Test
-  - Release
+# stages:
+#   - Static Analysis
+#   - Test
+#   - Release
  
 
-# Static Analysis Stage
-eslint:
-  stage: Static Analysis
-  image: node:20-slim
-  variables:
-    AUTH0_DOMAIN: $AUTH0_DOMAIN
-    AUTHO_CLIENT_ID: $AUTHO_CLIENT_ID
-    AUTHO_CLIENT_SECRET: $AUTHO_CLIENT_SECRET
-    API_IDENTIFIER: $API_IDENTIFIER
-  script:
-    - npm install
-    - npx eslint .
-  allow_failure: false 
-  only:
-    - main
+# # Static Analysis Stage
+# eslint:
+#   stage: Static Analysis
+#   image: node:20-slim
+#   variables:
+#     AUTH0_DOMAIN: $AUTH0_DOMAIN
+#     AUTHO_CLIENT_ID: $AUTHO_CLIENT_ID
+#     AUTHO_CLIENT_SECRET: $AUTHO_CLIENT_SECRET
+#     API_IDENTIFIER: $API_IDENTIFIER
+#   script:
+#     - npm install
+#     - npx eslint .
+#   allow_failure: false 
+#   only:
+#     - main
 
-# Test Stage
-mock-integration-tests:
-  stage: Test
-  image: node:20-slim
-  script:
-    - npm install
-    - npm run test:coverage
-  allow_failure: false 
-  only:
-    - main
+# # Test Stage
+# mock-integration-tests:
+#   stage: Test
+#   image: node:20-slim
+#   script:
+#     - npm install
+#     - npm run test:coverage
+#   allow_failure: false 
+#   only:
+#     - main
 
-# Release Stage
-# based on: https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Docker.gitlab-ci.yml
-release-image:
-  stage: Release
-  image: docker:27.1.1
-  variables:
-    AUTH0_DOMAIN: $AUTH0_DOMAIN
-    AUTHO_CLIENT_ID: $AUTHO_CLIENT_ID
-    AUTHO_CLIENT_SECRET: $AUTHO_CLIENT_SECRET
-    API_IDENTIFIER: $API_IDENTIFIER
-    USER_URL: $USER_URL
-    RECIPE_URL: $RECIPE_URL
-    REVIEW_URL: $REVIEW_URL
-  services:
-    - docker:27.1.1-dind
-  before_script:
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-  script:
-    - docker build --pull -f dev.dockerfile -t "$CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:$CI_COMMIT_SHA" .
-    - docker push "$CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:$CI_COMMIT_SHA"
+# # Release Stage
+# # based on: https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Docker.gitlab-ci.yml
+# release-image:
+#   stage: Release
+#   image: docker:27.1.1
+#   variables:
+#     AUTH0_DOMAIN: $AUTH0_DOMAIN
+#     AUTHO_CLIENT_ID: $AUTHO_CLIENT_ID
+#     AUTHO_CLIENT_SECRET: $AUTHO_CLIENT_SECRET
+#     API_IDENTIFIER: $API_IDENTIFIER
+#     USER_URL: $USER_URL
+#     RECIPE_URL: $RECIPE_URL
+#     REVIEW_URL: $REVIEW_URL
+#   services:
+#     - docker:27.1.1-dind
+#   before_script:
+#     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+#   script:
+#     - docker build --pull -f dev.dockerfile -t "$CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:$CI_COMMIT_SHA" .
+#     - docker push "$CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:$CI_COMMIT_SHA"

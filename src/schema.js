@@ -13,7 +13,7 @@ export const typeDefs = `#graphql
 
     type Recipe {
         _id: ID!
-        author: ID!
+        author: User!
         cook_time: Int!
         created_at: String
         cuisine_type: String
@@ -26,6 +26,7 @@ export const typeDefs = `#graphql
         steps: [Step!]!
         views: Int
         reviews: [Review]
+        rating: Float
     }
 
     type Ingredient {
@@ -54,6 +55,7 @@ export const typeDefs = `#graphql
         recipes: [Recipe]
         recipe(_id: ID!): Recipe
         reviews(recipe_id: String!): [Review]
+        getRecipeRating(recipe_id: String!): Int!
     }
 
     input IngredientInput {

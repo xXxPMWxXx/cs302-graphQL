@@ -7,6 +7,10 @@ export class ReviewsAPI extends RESTDataSource {
         return this.get(`recipe/${encodeURIComponent(recipe_id)}`);
     }
 
+    async getRecipeRating(recipe_id) {
+        return this.get(`rating/${encodeURIComponent(recipe_id)}`);
+    }
+
     async createReview(review) {
         return this.post(
             'create_review', // path
