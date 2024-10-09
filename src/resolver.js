@@ -17,21 +17,21 @@ export const resolvers = {
     Query: {
     // Check if user is authenticated
     // (parent, args)
-        userById: withAuth(async (_, { _id }, { dataSources }) => {
+        userById: async (_, { _id }, { dataSources }) => {
             return dataSources.usersAPI.getUserById(_id);
-        }),
-        recipes: withAuth(async (_, __, { dataSources }) => {
+        },
+        recipes: async (_, __, { dataSources }) => {
             return dataSources.recipesAPI.getRecipes();
-        }),
-        recipe: withAuth(async (_, {_id}, { dataSources }) => {
+        },
+        recipe: async (_, {_id}, { dataSources }) => {
             return dataSources.recipesAPI.getRecipe(_id);
-        }),
-        reviews: withAuth(async (_, {recipe_id}, { dataSources }) => {
+        },
+        reviews: async (_, {recipe_id}, { dataSources }) => {
             return dataSources.reviewsAPI.getReviews(recipe_id);
-        }),
-        getRecipeRating: withAuth(async (_, {recipe_id}, { dataSources }) => {
+        },
+        getRecipeRating: async (_, {recipe_id}, { dataSources }) => {
             return dataSources.reviewsAPI.getRecipeRating(recipe_id);
-        }),
+        },
     },
     Recipe : { // To return from other data sources
         reviews: async (parent,__,{ dataSources }) => {
