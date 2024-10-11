@@ -11,6 +11,10 @@ export class ReviewsAPI extends RESTDataSource {
         return this.get(`rating/${encodeURIComponent(recipe_id)}`);
     }
 
+    async softDelByRecipeId(recipe_id) {
+        return this.patch(`recipe/${encodeURIComponent(recipe_id)}`);
+    }
+
     async createReview(review) {
         return this.post(
             'create_review', // path

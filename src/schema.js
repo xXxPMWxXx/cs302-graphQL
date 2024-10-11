@@ -77,6 +77,10 @@ export const typeDefs = `#graphql
         email: String
     ): User
 
+    softDelByRecipeId(
+        recipe_id: ID!
+    ): Boolean
+
     createRecipe(
         name: String!
         portion_size: Int
