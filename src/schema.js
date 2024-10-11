@@ -53,6 +53,7 @@ export const typeDefs = `#graphql
     type Query {
         userById(_id: ID!): User
         recipes: [Recipe]
+        getRecipesByAuthor(author_id: ID!): [Recipe]
         recipe(_id: ID!): Recipe
         reviews(recipe_id: String!): [Review]
         getRecipeRating(recipe_id: String!): Int!

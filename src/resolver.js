@@ -23,6 +23,9 @@ export const resolvers = {
         recipes: async (_, __, { dataSources }) => {
             return dataSources.recipesAPI.getRecipes();
         },
+        getRecipesByAuthor: async (_, {author_id}, { dataSources }) => {
+            return dataSources.recipesAPI.getRecipesByAuthor(author_id);
+        },
         recipe: async (_, {_id}, { dataSources }) => {
             return dataSources.recipesAPI.getRecipe(_id);
         },

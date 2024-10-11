@@ -11,6 +11,11 @@ export class RecipesAPI extends RESTDataSource {
         return data.recipes;
     }
 
+    async getRecipesByAuthor(auther) {
+        const data = await this.get(`recipes/author/${encodeURIComponent(auther)}`);
+        return data.recipes;
+    }
+
     // POST
     async createRecipe(recipe) {
         return this.post(
