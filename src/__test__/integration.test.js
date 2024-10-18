@@ -547,7 +547,6 @@ describe('GraphQL Integration Tests', () => {
             .set('Authorization', `Bearer ${testToken}`);
 
         expect(response.body.errors).toBeUndefined();
-        console.log(response.body.data.reviews);
         expect(response.body.data.reviews).toEqual([
             {
                 _id: 'r1',

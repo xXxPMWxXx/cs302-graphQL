@@ -50,13 +50,12 @@ release-image:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
     # - docker build --pull -f dev.dockerfile -t "$CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:$CI_COMMIT_SHA" .
-    - docker build --pull -f dev.dockerfile \
-      --build-arg AUTH0_DOMAIN=$AUTH0_DOMAIN \
-      --build-arg AUTHO_CLIENT_ID=$AUTHO_CLIENT_ID \
-      --build-arg AUTHO_CLIENT_SECRET=$AUTHO_CLIENT_SECRET \
-      --build-arg API_IDENTIFIER=$API_IDENTIFIER \
-      --build-arg USER_URL=$USER_URL \
-      --build-arg RECIPE_URL=$RECIPE_URL \
-      --build-arg REVIEW_URL=$REVIEW_URL \
-      -t "$CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:$CI_COMMIT_SHA" .
+    - docker build --pull -f dev.dockerfile -t "$CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:$CI_COMMIT_SHA" .
+      --build-arg AUTH0_DOMAIN
+      --build-arg AUTHO_CLIENT_ID
+      --build-arg AUTHO_CLIENT_SECRET
+      --build-arg API_IDENTIFIER
+      --build-arg USER_URL
+      --build-arg RECIPE_URL
+      --build-arg REVIEW_URL
     - docker push "$CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:$CI_COMMIT_SHA"
