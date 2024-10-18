@@ -81,18 +81,18 @@ export const typeDefs = `#graphql
         recipe_id: ID!
     ): Boolean
 
-    createRecipe(
-        name: String!
-        portion_size: Int
-        cuisine_type: String
-        description: String
-        ingredients: [IngredientInput]
-        steps: [StepInput]
-        author: ID!
-        prep_time: Int
-        cook_time: Int
-        image: String
-    ): Recipe
+    # createRecipe(
+    #     name: String!
+    #     portion_size: Int
+    #     cuisine_type: String
+    #     description: String
+    #     ingredients: [IngredientInput]
+    #     steps: [StepInput]
+    #     author: ID!
+    #     prep_time: Int
+    #     cook_time: Int
+    #     image: String
+    # ): Recipe
 
     createReview(
         recipe: String!

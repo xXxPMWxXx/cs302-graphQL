@@ -43,7 +43,6 @@ const mockRecipesAPI = jest.fn().mockImplementation(() => ({
     getRecipes: jest.fn().mockResolvedValue([
         {
             _id: '1',
-            author: '123',
             cook_time: 30,
             created_at: '2024-10-01T00:00:00Z',
             cuisine_type: 'Italian',
@@ -65,7 +64,6 @@ const mockRecipesAPI = jest.fn().mockImplementation(() => ({
         },
         {
             _id: '2',
-            author: '123',
             cook_time: 25,
             created_at: '2024-10-01T00:00:00Z',
             cuisine_type: 'Mexican',
@@ -88,7 +86,6 @@ const mockRecipesAPI = jest.fn().mockImplementation(() => ({
     ]),
     getRecipe: jest.fn().mockResolvedValue({
         _id: '1',
-        author: '123',
         cook_time: 30,
         created_at: '2024-10-01T00:00:00Z',
         cuisine_type: 'Italian',
@@ -108,28 +105,28 @@ const mockRecipesAPI = jest.fn().mockImplementation(() => ({
         views: 100,
         reviews: [],
     }),
-    createRecipe: jest.fn().mockResolvedValue({
-        _id: '2',
-        author: '123',
-        cook_time: 25,
-        created_at: '2024-10-02T00:00:00Z',
-        cuisine_type: 'Mexican',
-        description: 'Spicy tacos with beef.',
-        image: 'https://example.com/tacos.jpg',
-        ingredients: [
-            { ingredient_name: 'taco shell', quantity: '4' },
-            { ingredient_name: 'ground beef', quantity: '300g' },
-        ],
-        name: 'Tacos',
-        portion_size: 4,
-        prep_time: 15,
-        steps: [
-            { description: 'Cook beef.', image: null },
-            { description: 'Fill taco shells with beef.', image: null },
-        ],
-        views: 50,
-        reviews: [],
-    }),
+    // createRecipe: jest.fn().mockResolvedValue({
+    //     _id: '2',
+    //     author: '123',
+    //     cook_time: 25,
+    //     created_at: '2024-10-02T00:00:00Z',
+    //     cuisine_type: 'Mexican',
+    //     description: 'Spicy tacos with beef.',
+    //     image: 'https://example.com/tacos.jpg',
+    //     ingredients: [
+    //         { ingredient_name: 'taco shell', quantity: '4' },
+    //         { ingredient_name: 'ground beef', quantity: '300g' },
+    //     ],
+    //     name: 'Tacos',
+    //     portion_size: 4,
+    //     prep_time: 15,
+    //     steps: [
+    //         { description: 'Cook beef.', image: null },
+    //         { description: 'Fill taco shells with beef.', image: null },
+    //     ],
+    //     views: 50,
+    //     reviews: [],
+    // }),
 }));
 // Assign mock for ReviewsAPI
 const mockReviewsAPI = jest.fn().mockImplementation(() => ({
@@ -137,8 +134,6 @@ const mockReviewsAPI = jest.fn().mockImplementation(() => ({
         {
             _id: 'r1',
             recipe: '1', // Recipe ID associated with the review
-            author: { _id: 'u1', email: 'Alice@email.com' }, // Mock author object
-            by: { _id: 'u2', email: 'Bob@email.com' }, // Mock reviewer object
             rating: 5,
             comment: 'Fantastic!',
             created_at: '2024-10-01T00:00:00Z',
@@ -146,8 +141,6 @@ const mockReviewsAPI = jest.fn().mockImplementation(() => ({
         {
             _id: 'r2',
             recipe: '1', // Recipe ID associated with the review
-            author: { _id: 'u1', email: 'Alice@email.com' }, // Mock author object
-            by: { _id: 'u3', email: 'Bob@email.com' }, // Mock reviewer object
             rating: 4,
             comment: 'Very good, will try again!',
             created_at: '2024-10-02T00:00:00Z',
@@ -256,85 +249,86 @@ describe('GraphQL Integration Tests', () => {
     });
 
     // For Recipe API 
-    it('creates a new recipe', async () => {
-        const CREATE_RECIPE = `
-          mutation CreateRecipe(
-            $name: String!
-            $portion_size: Int
-            $cuisine_type: String
-            $description: String
-            $ingredients: [IngredientInput]
-            $steps: [StepInput]
-            $author: ID!
-            $prep_time: Int
-            $cook_time: Int
-            $image: String
-          ) {
-            createRecipe(
-              name: $name
-              portion_size: $portion_size
-              cuisine_type: $cuisine_type
-              description: $description
-              ingredients: $ingredients
-              steps: $steps
-              author: $author
-              prep_time: $prep_time
-              cook_time: $cook_time
-              image: $image
-            ) {
-              _id
-              name
-              description
-              author
-              cook_time
-              prep_time
-              ingredients {
-                ingredient_name
-                quantity
-              }
-            }
-          }
-        `;
+    // Create recipe will not use graphQL
+    // it('creates a new recipe', async () => {
+    //     const CREATE_RECIPE = `
+    //       mutation CreateRecipe(
+    //         $name: String!
+    //         $portion_size: Int
+    //         $cuisine_type: String
+    //         $description: String
+    //         $ingredients: [IngredientInput]
+    //         $steps: [StepInput]
+    //         $author: User!
+    //         $prep_time: Int
+    //         $cook_time: Int
+    //         $image: String
+    //       ) {
+    //         createRecipe(
+    //           name: $name
+    //           portion_size: $portion_size
+    //           cuisine_type: $cuisine_type
+    //           description: $description
+    //           ingredients: $ingredients
+    //           steps: $steps
+    //           author: $author
+    //           prep_time: $prep_time
+    //           cook_time: $cook_time
+    //           image: $image
+    //         ) {
+    //           _id
+    //           name
+    //           description
+    //           author
+    //           cook_time
+    //           prep_time
+    //           ingredients {
+    //             ingredient_name
+    //             quantity
+    //           }
+    //         }
+    //       }
+    //     `;
 
-        const response = await request(httpServer)
-            .post('/graphql')
-            .send({
-                query: CREATE_RECIPE,
-                variables: {
-                    name: 'Tacos',
-                    portion_size: 4,
-                    cuisine_type: 'Mexican',
-                    description: 'Spicy tacos with beef.',
-                    ingredients: [
-                        { ingredient_name: 'taco shell', quantity: '4' },
-                        { ingredient_name: 'ground beef', quantity: '300g' },
-                    ],
-                    steps: [
-                        { description: 'Cook beef.', image: null },
-                        { description: 'Fill taco shells with beef.', image: null },
-                    ],
-                    author: '123',
-                    prep_time: 15,
-                    cook_time: 25,
-                    image: 'https://example.com/tacos.jpg',
-                },
-            })
-            .set('Authorization', `Bearer ${testToken}`);
+    //     const response = await request(httpServer)
+    //         .post('/graphql')
+    //         .send({
+    //             query: CREATE_RECIPE,
+    //             variables: {
+    //                 name: 'Tacos',
+    //                 portion_size: 4,
+    //                 cuisine_type: 'Mexican',
+    //                 description: 'Spicy tacos with beef.',
+    //                 ingredients: [
+    //                     { ingredient_name: 'taco shell', quantity: '4' },
+    //                     { ingredient_name: 'ground beef', quantity: '300g' },
+    //                 ],
+    //                 steps: [
+    //                     { description: 'Cook beef.', image: null },
+    //                     { description: 'Fill taco shells with beef.', image: null },
+    //                 ],
+    //                 author: '123',
+    //                 prep_time: 15,
+    //                 cook_time: 25,
+    //                 image: 'https://example.com/tacos.jpg',
+    //             },
+    //         })
+    //         .set('Authorization', `Bearer ${testToken}`);
 
-        expect(response.body.errors).toBeUndefined();
-        expect(response.body.data.createRecipe).toEqual({
-            _id: '2',
-            name: 'Tacos',
-            description: 'Spicy tacos with beef.',
-            author: '123',
-            cook_time: 25,
-            prep_time: 15,
-            ingredients: [
-                { ingredient_name: 'taco shell', quantity: '4' },
-                { ingredient_name: 'ground beef', quantity: '300g' },
-            ],
-        });
-    });
+    //     expect(response.body.errors).toBeUndefined();
+    //     expect(response.body.data.createRecipe).toEqual({
+    //         _id: '2',
+    //         name: 'Tacos',
+    //         description: 'Spicy tacos with beef.',
+    //         author: '123',
+    //         cook_time: 25,
+    //         prep_time: 15,
+    //         ingredients: [
+    //             { ingredient_name: 'taco shell', quantity: '4' },
+    //             { ingredient_name: 'ground beef', quantity: '300g' },
+    //         ],
+    //     });
+    // });
 
     it('fetches a recipe by ID', async () => {
         const GET_RECIPE_BY_ID = `
@@ -343,16 +337,18 @@ describe('GraphQL Integration Tests', () => {
                 _id
                 name
                 description
-                author
+                author {
+                    email
+                }
                 cook_time
                 prep_time
                 ingredients {
-                ingredient_name
-                quantity
+                    ingredient_name
+                    quantity
                 }
                 steps {
-                description
-                image
+                    description
+                    image
                 }
                 reviews {
                     recipe
@@ -374,7 +370,9 @@ describe('GraphQL Integration Tests', () => {
             _id: '1',
             name: 'Pasta',
             description: 'Delicious pasta with tomato sauce.',
-            author: '123',
+            author: {
+                email: 'johndoe@example.com', // based on mockUserAPI method output
+            },
             cook_time: 30,
             prep_time: 10,
             ingredients: [
@@ -397,7 +395,11 @@ describe('GraphQL Integration Tests', () => {
               _id
               name
               description
-              author
+              author {
+                email
+                first_name
+                last_name
+              }
               cook_time
               prep_time
               ingredients {
@@ -424,7 +426,11 @@ describe('GraphQL Integration Tests', () => {
                 _id: '1',
                 name: 'Pasta',
                 description: 'Delicious pasta with tomato sauce.',
-                author: '123',
+                author: {
+                    email: 'johndoe@example.com',
+                    first_name: 'John',
+                    last_name: 'Doe',
+                },
                 cook_time: 30,
                 prep_time: 10,
                 ingredients: [
@@ -441,7 +447,11 @@ describe('GraphQL Integration Tests', () => {
                 _id: '2',
                 name: 'Tacos',
                 description: 'Spicy tacos with beef.',
-                author: '123',
+                author: {
+                    email: 'johndoe@example.com',
+                    first_name: 'John',
+                    last_name: 'Doe',
+                },
                 cook_time: 25,
                 prep_time: 15,
                 ingredients: [
@@ -537,22 +547,38 @@ describe('GraphQL Integration Tests', () => {
             .set('Authorization', `Bearer ${testToken}`);
 
         expect(response.body.errors).toBeUndefined();
-        expect(response.body.data.reviews).toEqual(expect.arrayContaining([
+        console.log(response.body.data.reviews);
+        expect(response.body.data.reviews).toEqual([
             {
-                _id: expect.any(String), // The ID will be generated, so we can check for its existence
+                _id: 'r1',
                 recipe: '1',
                 author: {
-                    _id: expect.any(String), // Replace with the expected user ID if needed
-                    email: expect.any(String), // Replace with the expected name if needed
+                    _id: '123',
+                    email: 'johndoe@example.com'
                 },
                 by: {
-                    _id: expect.any(String), // Replace with the expected user ID if needed
-                    email: expect.any(String), // Replace with the expected name if needed
+                    _id: '123',
+                    email: 'johndoe@example.com'
                 },
-                comment: expect.any(String),
-                rating: expect.any(Number),
+                rating: 5,
+                comment: 'Fantastic!',
                 created_at: expect.any(String),
             },
-        ]));
+            {
+                _id: 'r2',
+                recipe: '1',
+                author: {
+                    _id: '123',
+                    email: 'johndoe@example.com'
+                },
+                by: {
+                    _id: '123',
+                    email: 'johndoe@example.com'
+                },
+                comment: 'Very good, will try again!',
+                rating: 4,
+                created_at: expect.any(String)
+            }
+        ]);
     });
 });

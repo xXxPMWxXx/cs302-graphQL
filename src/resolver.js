@@ -70,25 +70,25 @@ export const resolvers = {
                 return false; // Return false if there's an error
             }
         }),
-        createRecipe: withAuth(async (_, { name, portion_size, cuisine_type, description, ingredients, steps, author, prep_time, cook_time, created_at, image }, { dataSources, cache }) => {
-            const newRecipe = {
-                name,
-                portion_size,
-                cuisine_type,
-                description,
-                ingredients,
-                steps,
-                author,
-                prep_time,
-                cook_time,
-                created_at,
-                image
-            };
+        // createRecipe: withAuth(async (_, { name, portion_size, cuisine_type, description, ingredients, steps, author, prep_time, cook_time, created_at, image }, { dataSources, cache }) => {
+        //     const newRecipe = {
+        //         name,
+        //         portion_size,
+        //         cuisine_type,
+        //         description,
+        //         ingredients,
+        //         steps,
+        //         author,
+        //         prep_time,
+        //         cook_time,
+        //         created_at,
+        //         image
+        //     };
 
-            const cacheKey = `httpcache:GET ${process.env.RECIPE_URL}/recipes`; // clear the get all recipes cache
-            await cache.delete(cacheKey);
-            return dataSources.recipesAPI.createRecipe(newRecipe);
-        }),
+        //     const cacheKey = `httpcache:GET ${process.env.RECIPE_URL}/recipes`; // clear the get all recipes cache
+        //     await cache.delete(cacheKey);
+        //     return dataSources.recipesAPI.createRecipe(newRecipe);
+        // }),
         createReview: withAuth(async (_, { recipe, author, by, comment, rating }, { dataSources, cache }) => {
             const newReview = {
                 recipe,
