@@ -66,8 +66,9 @@ export const resolvers = {
                 await dataSources.reviewsAPI.softDelByRecipeId(recipe_id);
                 return true; // Return true if successful
             } catch (error) {
-                console.error(error);
-                return false; // Return false if there's an error
+                // console.error(error);
+                // return false; // Return false if there's an error
+                throw new Error(error.message); 
             }
         }),
         // createRecipe: withAuth(async (_, { name, portion_size, cuisine_type, description, ingredients, steps, author, prep_time, cook_time, created_at, image }, { dataSources, cache }) => {

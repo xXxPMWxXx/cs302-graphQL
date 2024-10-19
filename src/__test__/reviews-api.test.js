@@ -36,6 +36,87 @@ describe('ReviewsAPI', () => {
         mockedSuperGet.mockRestore(); // Clean up the mock after the test
     });
 
+    test('getReviews handles API failure', async () => {
+        const recipeId = '123';
+    
+        // Mock the RESTDataSource get method to simulate an API failure
+        const mockedSuperGet = jest.spyOn(RESTDataSource.prototype, 'get').mockRejectedValueOnce(new Error('API failure'));
+    
+        // Expect an error to be thrown when the API fails
+        await expect(reviewsAPI.getReviews(recipeId)).rejects.toThrow('API failure');
+    
+        mockedSuperGet.mockRestore(); // Clean up the mock after the test
+    });
+
+    test('getRecipeRating retrieves the rating for a recipe by ID', async () => {
+        const recipeId = '123';
+
+        // Mocked rating data
+        const mockedRatingData = {
+            rating: 4.5,
+        };
+
+        // Mock the RESTDataSource get method
+        const mockedSuperGet = jest.spyOn(RESTDataSource.prototype, 'get').mockResolvedValueOnce(mockedRatingData);
+
+        const result = await reviewsAPI.getRecipeRating(recipeId);
+
+        // Check that the get method was called with the correct endpoint
+        expect(mockedSuperGet).toHaveBeenCalledWith(`rating/${encodeURIComponent(recipeId)}`);
+
+        // Verify the response matches the mocked rating data
+        expect(result).toEqual(mockedRatingData);
+
+        mockedSuperGet.mockRestore(); // Clean up the mock after the test
+    });
+
+    test('getRecipeRating handles API failure', async () => {
+        const recipeId = '123';
+
+        // Mock the RESTDataSource get method to simulate an API failure
+        const mockedSuperGet = jest.spyOn(RESTDataSource.prototype, 'get').mockRejectedValueOnce(new Error('API failure'));
+
+        // Expect an error to be thrown when the API fails
+        await expect(reviewsAPI.getRecipeRating(recipeId)).rejects.toThrow('API failure');
+
+        mockedSuperGet.mockRestore(); // Clean up the mock after the test
+    });
+    
+    test('softDelByRecipeId sends a PATCH request to delete the recipe by ID', async () => {
+        const recipeId = '123';
+        
+        // Mock the RESTDataSource patch method to simulate successful soft delete
+        const mockedSuperPatch = jest.spyOn(RESTDataSource.prototype, 'patch').mockResolvedValueOnce({
+            success: true,
+            message: 'Review(s) successfully deleted for the recipe',
+        });
+
+        const result = await reviewsAPI.softDelByRecipeId(recipeId);
+
+        // Check that the patch method was called with the correct endpoint
+        expect(mockedSuperPatch).toHaveBeenCalledWith(`recipe/${encodeURIComponent(recipeId)}`);
+
+        // Verify the response matches the mocked data
+        expect(result).toEqual({
+            success: true,
+            message: 'Review(s) successfully deleted for the recipe',
+        });
+
+        mockedSuperPatch.mockRestore(); // Clean up the mock after the test
+    });
+
+    test('softDelByRecipeId handles API failure', async () => {
+        const recipeId = '123';
+
+        // Mock the RESTDataSource patch method to simulate an API failure
+        const mockedSuperPatch = jest.spyOn(RESTDataSource.prototype, 'patch').mockRejectedValueOnce(new Error('API failure'));
+
+        // Expect an error to be thrown when the API fails
+        await expect(reviewsAPI.softDelByRecipeId(recipeId)).rejects.toThrow('API failure');
+
+        mockedSuperPatch.mockRestore(); // Clean up the mock after the test
+    });
+
     test('createReview handles valid review input', async () => {
         const newReview = { recipe_id: '123', content: 'Amazing recipe!' };
         const mockCreatedReview = { _id: '3', ...newReview };

@@ -16,12 +16,12 @@ export class RecipesAPI extends RESTDataSource {
         return data.recipes;
     }
 
-    // POST
-    async createRecipe(recipe) {
-        return this.post(
-            'recipes', // path
-            { body: { recipe } }, // request body
-        );
-    }
+    // // POST
+    // async createRecipe(recipe) {
+    //     return this.post(
+    //         'recipes', // path
+    //         { body: { recipe } }, // request body
+    //     );
+    // }
 
 }
