@@ -24,15 +24,23 @@ const server = new ApolloServer({
     // resolvers -- handles request and return data
     typeDefs,
     resolvers,
-    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
 });
 
 // Ensure we wait for our server to start
 await server.start();
 
+// Detailed CORS options
+const corsOptions = {
+    origin: '*', // Allow all origins, or specify your frontend URL like 'http://localhost:3000'
+    methods: 'GET,POST,OPTIONS', // Specify allowed methods
+    allowedHeaders: 'Content-Type, Authorization', // Allowed headers
+    credentials: true, // If you need to allow credentials (cookies, auth headers)
+};
+
 app.use(
     '/graphql',
-    cors(),
+    cors(corsOptions),
     // 50mb is the limit that `startStandaloneServer` uses, but you may configure this to suit your needs
     express.json({ limit: '50mb' }),
     // expressMiddleware accepts the same arguments:
