@@ -10,6 +10,12 @@ curl --request POST \
 - `npx eslint .` => static code analysis
 - `npm run test:coverage` => unit test and integration test with coverage
 
+## To Run locally
+- `npm install` => install dependencies
+- `npm start` => start graphQL server
+  - Please ensure that all the other services are running and the environment variable are added in the .env file
+  - `http://localhost:4000/graphql` => Access the GraphQL server sandbox to check the available query and mutation
+
 ## Login to Apollo Server to access saved query
 - email: `pratahouse.cs302@gmail.com`
 - password: `Pratahouse302`
