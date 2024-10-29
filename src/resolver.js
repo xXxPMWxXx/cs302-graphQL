@@ -60,14 +60,10 @@ export const resolvers = {
             const user = await fetchUserInfo(headers.authorization);
             return dataSources.usersAPI.findOrCreateUser(user);
         }),
-        softDelByRecipeId: withAuth(async (_, { recipe_id }, {dataSources,cache}) => {
+        softDelByRecipeId: withAuth(async (_, { recipe_id }, {dataSources}) => {
             try {
                 // Call the PATCH method
                 await dataSources.reviewsAPI.softDelByRecipeId(recipe_id);
-                // const recipeDetails = await dataSources.recipesAPI.getRecipe(recipe_id); 
-                // const authorId = recipeDetails.author; 
-                // const cacheKey = `httpcache:GET ${process.env.RECIPE_URL}/recipes/author/${authorId}`; // clear the cache
-                await cache.delete(cacheKey);
                 return true; // Return true if successful
             } catch (error) {
                 // console.error(error);

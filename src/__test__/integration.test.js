@@ -248,7 +248,7 @@ beforeAll(async () => {
                     headers: req.headers,
                     dataSources: {
                         usersAPI: new mockUsersAPI({ cache }),
-                        recipesAPI: new mockRecipesAPI({ cache }),
+                        recipesAPI: new mockRecipesAPI(),
                         reviewsAPI: new mockReviewsAPI({ cache }),
                     },
                 };
