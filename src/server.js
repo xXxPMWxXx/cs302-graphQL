@@ -53,7 +53,7 @@ app.use(
                 headers: req.headers,
                 dataSources: {
                     usersAPI: new UsersAPI({ cache }),
-                    recipesAPI: new RecipesAPI({ cache }),
+                    recipesAPI: new RecipesAPI(),
                     reviewsAPI: new ReviewsAPI({ cache }),
                 },
             };
