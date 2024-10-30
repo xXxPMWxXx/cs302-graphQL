@@ -5,6 +5,13 @@ curl --request POST \
   --header 'content-type: application/json' \
   --data '{"client_id":"62pmKBHA4NLwlB1YiQv1wKd8JOCkRsri","client_secret":"KShZHULodLIBFXQXBx3CospZQBxhqKyGeCNFLr1EnegfMakE4pNApgodOvcRsqhq","audience":"http://localhost:4000/","grant_type":"client_credentials"}'
 </pre>
+### Query need access token
+- getRecipesByAuthor
+### All mutation need access token
+- findOrCreateUser (only work with access token generated via frontend)
+- softDelByRecipeId
+- createReview
+
 
 ## To Run test
 - `npx eslint .` => static code analysis
@@ -19,4 +26,3 @@ curl --request POST \
 ## Login to Apollo Server to access saved query
 - email: `pratahouse.cs302@gmail.com`
 - password: `Pratahouse302`
-

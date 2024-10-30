@@ -29,8 +29,6 @@ async function isTokenValid(token) {
     if (token) {
         const bearerToken = token.split(' ');
 
-        // const decodedToken = jwt.decode(bearerToken[1], { complete: true });  // `complete: true` includes header and signature
-        // console.log('Decoded Token:', decodedToken);  // This will log the fields in the token
         const result = new Promise((resolve) => {
             jwt.verify(
                 bearerToken[1],
@@ -72,8 +70,6 @@ export const fetchUserInfo = async (token) => {
 // New function to handle token validation in resolvers
 export const validateToken = async (token) => {
     const { error } = await isTokenValid(token);
-    // const user = await fetchUserInfo(token);
-    // console.log(user);
     if (error) {
         throw new AuthenticationError('Invalid token');
     }

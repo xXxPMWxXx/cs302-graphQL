@@ -23,9 +23,9 @@ export const resolvers = {
         recipes: async (_, __, { dataSources }) => {
             return dataSources.recipesAPI.getRecipes();
         },
-        getRecipesByAuthor: async (_, { author_id }, { dataSources }) => {
+        getRecipesByAuthor: withAuth(async (_, { author_id }, { dataSources }) => {
             return dataSources.recipesAPI.getRecipesByAuthor(author_id);
-        },
+        }),
         recipe: async (_, { _id }, { dataSources }) => {
             return dataSources.recipesAPI.getRecipe(_id);
         },
@@ -66,30 +66,9 @@ export const resolvers = {
                 await dataSources.reviewsAPI.softDelByRecipeId(recipe_id);
                 return true; // Return true if successful
             } catch (error) {
-                // console.error(error);
-                // return false; // Return false if there's an error
                 throw new Error(error.message); 
             }
         }),
-        // createRecipe: withAuth(async (_, { name, portion_size, cuisine_type, description, ingredients, steps, author, prep_time, cook_time, created_at, image }, { dataSources, cache }) => {
-        //     const newRecipe = {
-        //         name,
-        //         portion_size,
-        //         cuisine_type,
-        //         description,
-        //         ingredients,
-        //         steps,
-        //         author,
-        //         prep_time,
-        //         cook_time,
-        //         created_at,
-        //         image
-        //     };
-
-        //     const cacheKey = `httpcache:GET ${process.env.RECIPE_URL}/recipes`; // clear the get all recipes cache
-        //     await cache.delete(cacheKey);
-        //     return dataSources.recipesAPI.createRecipe(newRecipe);
-        // }),
         createReview: withAuth(async (_, { recipe, author, by, comment, rating }, { dataSources, cache }) => {
             const newReview = {
                 recipe,
