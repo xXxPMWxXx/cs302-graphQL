@@ -534,7 +534,8 @@ describe('GraphQL Integration Tests for Recipe API', () => {
         const authorId = '123'; // Valid author ID for the mock
         const response = await request(httpServer)
             .post('/graphql')
-            .send({ query: GET_RECIPES_BY_AUTHOR, variables: { authorId } });
+            .send({ query: GET_RECIPES_BY_AUTHOR, variables: { authorId } })
+            .set('Authorization', `Bearer ${testToken}`);
         expect(response.body.errors).toBeUndefined();
         expect(response.body.data.getRecipesByAuthor).toEqual([
             {
@@ -590,7 +591,8 @@ describe('GraphQL Integration Tests for Recipe API', () => {
         const authorId = 'unknown_author'; // Unknown author ID for the error case
         const response = await request(httpServer)
             .post('/graphql')
-            .send({ query: GET_RECIPES_BY_AUTHOR, variables: { authorId } });
+            .send({ query: GET_RECIPES_BY_AUTHOR, variables: { authorId } })
+            .set('Authorization', `Bearer ${testToken}`);
 
         expect(response.body.errors).toBeDefined();
         expect(response.body.errors[0].message).toBe('No recipes found for this author');

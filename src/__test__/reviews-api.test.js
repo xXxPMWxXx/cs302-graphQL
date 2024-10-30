@@ -36,14 +36,17 @@ describe('ReviewsAPI', () => {
         mockedSuperGet.mockRestore(); // Clean up the mock after the test
     });
 
-    test('getReviews handles API failure', async () => {
+    test('getReviews returns null for 404 error', async () => {
         const recipeId = '123';
     
-        // Mock the RESTDataSource get method to simulate an API failure
-        const mockedSuperGet = jest.spyOn(RESTDataSource.prototype, 'get').mockRejectedValueOnce(new Error('API failure'));
+        // Mock the RESTDataSource get method to simulate a 404 error
+        const error = new Error('Not Found');
+        error.extensions = { response: { status: 404 } };
+        const mockedSuperGet = jest.spyOn(RESTDataSource.prototype, 'get').mockRejectedValueOnce(error);
     
-        // Expect an error to be thrown when the API fails
-        await expect(reviewsAPI.getReviews(recipeId)).rejects.toThrow('API failure');
+        // Expect null to be returned when the API responds with a 404
+        const result = await reviewsAPI.getReviews(recipeId);
+        expect(result).toBeNull();
     
         mockedSuperGet.mockRestore(); // Clean up the mock after the test
     });
