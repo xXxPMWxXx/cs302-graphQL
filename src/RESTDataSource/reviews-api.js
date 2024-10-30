@@ -4,7 +4,15 @@ export class ReviewsAPI extends RESTDataSource {
     baseURL = `${process.env.REVIEW_URL}/review/`;
 
     async getReviews(recipe_id) {
-        return this.get(`recipe/${encodeURIComponent(recipe_id)}`);
+        try {
+            return await this.get(`recipe/${encodeURIComponent(recipe_id)}`);
+        } catch (error) {
+            if (error.extensions.response.status === 404) {
+                return null;
+            }else {
+                return error;
+            }
+        }
     }
 
     async getRecipeRating(recipe_id) {
