@@ -52,7 +52,7 @@ export const resolvers = {
             return dataSources.usersAPI.getUserById(parent.author);
         },
         by: async (parent, __, { dataSources }) => {
-            return dataSources.usersAPI.getUserById(parent.author);
+            return dataSources.usersAPI.getUserById(parent.by);
         },
     },
     Mutation: {
