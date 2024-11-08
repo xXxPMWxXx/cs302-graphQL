@@ -171,6 +171,7 @@ const mockReviewsAPI = jest.fn().mockImplementation(() => ({
             recipe: '1', // Recipe ID associated with the review
             rating: 5,
             author: '123',
+            by: '123',
             comment: 'Fantastic!',
             created_at: '2024-10-01T00:00:00Z',
         },
@@ -179,6 +180,7 @@ const mockReviewsAPI = jest.fn().mockImplementation(() => ({
             recipe: '1', // Recipe ID associated with the review
             rating: 4,
             author: '123',
+            by: '123',
             comment: 'Very good, will try again!',
             created_at: '2024-10-02T00:00:00Z',
         },
@@ -189,6 +191,7 @@ const mockReviewsAPI = jest.fn().mockImplementation(() => ({
         recipe: '1', // Recipe ID associated with the review
         rating: 5,
         author: '123',
+        by: '123',
         comment: 'Amazing recipe!',
         created_at: '2024-10-03T00:00:00Z',
     }),
