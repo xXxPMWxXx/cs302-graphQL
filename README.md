@@ -23,10 +23,13 @@ curl --request POST \
   - `RECIPE_URL`
   - `REVIEW_URL`
 - Notes: 
-  - The above environment variable is for setting up our whole backend using Docker under the same container. 
-  <mark>We recommend to setup our project using our [compose](https://gitlab.com/cs302-2024/g1-team4/compose) repo to setup everything at once.</mark>
-  - Depend on how you setup the other service, the environment variable may need to change accordingly
-  - Please contact us, if you face any difficulty in setting up our project.
+  - Download our environment variable file from S3, using this [link](https://assets-prata-house.s3.ap-southeast-1.amazonaws.com/Environment+File/CS302_G1_T4_ENV.txt)
+
+  <mark>For setting the entire Prata House Project, we recommend using 
+  - [compose](https://gitlab.com/cs302-2024/g1-team4/compose) repo for `Dev` environment, 
+  - [minikube](https://gitlab.com/cs302-2024/g1-team4/kubernetes) repo for `Prod` environment.
+
+  _Please contact us if you face any difficulty in setting up our project._
 
 ## To Run test
 - `npx eslint .` => static code analysis
