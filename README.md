@@ -17,7 +17,7 @@ curl --request POST \
 - Copy the graphQL service variable into .env file.
 - Notes: 
   - The above environment variable is for setting up our whole backend using Docker under the same container. 
-  <mark>We recommend to setup our project using our compose repo to setup everything at once.</mark>
+  <mark>We recommend to setup our project using our [compose](https://gitlab.com/cs302-2024/g1-team4/compose) repo to setup everything at once.</mark>
   - Depend on how you setup the other service, the environment variable may need to change accordingly
   - Please contact us, if you face any difficulty in setting up our project.
 
