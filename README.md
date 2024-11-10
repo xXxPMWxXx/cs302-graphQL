@@ -12,6 +12,14 @@ curl --request POST \
 - softDelByRecipeId
 - createReview
 
+## Prerequisite
+- Download our environment variable file from S3, using this [link](https://assets-prata-house.s3.ap-southeast-1.amazonaws.com/Environment+File/CS302_G1_T4_ENV.txt)
+- Copy the graphQL service variable into .env file.
+- Notes: 
+  - The above environment variable is for setting up our whole backend using Docker under the same container. 
+  <mark>We recommend to setup our project using our compose repo to setup everything at once.</mark>
+  - Depend on how you setup the other service, the environment variable may need to change accordingly
+  - Please contact us, if you face any difficulty in setting up our project.
 
 ## To Run test
 - `npx eslint .` => static code analysis
@@ -22,6 +30,9 @@ curl --request POST \
 - `npm start` => start graphQL server
   - Please ensure that all the other services are running and the environment variable are added in the .env file
   - `http://localhost:4000/graphql` => Access the GraphQL server sandbox to check the available query and mutation
+
+## To Run using Docker
+- `docker compose up` => to run graphQL service (Need to modify the environment variable accordingly)
 
 ## Login to Apollo Server to access saved query
 - email: `pratahouse.cs302@gmail.com`
