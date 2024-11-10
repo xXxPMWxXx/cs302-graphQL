@@ -14,7 +14,14 @@ curl --request POST \
 
 ## Prerequisite
 - Download our environment variable file from S3, using this [link](https://assets-prata-house.s3.ap-southeast-1.amazonaws.com/Environment+File/CS302_G1_T4_ENV.txt)
-- Copy the graphQL service variable into .env file.
+- Copy the graphQL service variable into .env file, which are:
+  - `AUTH0_DOMAIN`
+  - `AUTH0_CLIENT_ID`
+  - `AUTH0_CLIENT_SECRET`
+  - `API_IDENTIFIER`
+  - `USER_URL`
+  - `RECIPE_URL`
+  - `REVIEW_URL`
 - Notes: 
   - The above environment variable is for setting up our whole backend using Docker under the same container. 
   <mark>We recommend to setup our project using our [compose](https://gitlab.com/cs302-2024/g1-team4/compose) repo to setup everything at once.</mark>
