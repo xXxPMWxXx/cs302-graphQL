@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: graphql
+  name: graphql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: graphql
+  template:
+    metadata:
+      labels:
+        service: graphql
+    spec:
+      containers:
+        - env:
+            - name: API_IDENTIFIER
+              valueFrom:
+                configMapKeyRef:
+                  key: API_IDENTIFIER
+                  name: dev-env
+            - name: AUTH0_DOMAIN
+              valueFrom:
+                configMapKeyRef:
+                  key: AUTH0_DOMAIN
+                  name: dev-env
+            - name: AUTHO_CLIENT_ID
+              valueFrom:
+                configMapKeyRef:
+                  key: AUTHO_CLIENT_ID
+                  name: dev-env
+            - name: AUTHO_CLIENT_SECRET
+              valueFrom:
+                configMapKeyRef:
+                  key: AUTHO_CLIENT_SECRET
+                  name: dev-env
+            - name: RECIPE_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: RECIPE_URL
+                  name: dev-env
+            - name: REVIEW_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: REVIEW_URL
+                  name: dev-env
+            - name: USER_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: USER_URL
+                  name: dev-env
+          image: registry.gitlab.com/cs302-2024/g1-team4/backend/graphql/main:latest
+          imagePullPolicy: Always
+          name: graphql
+          ports:
+            - containerPort: 4000
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "200m"
+            limits:
+              cpu: "400m"
+      imagePullSecrets:
+        - name: gitlab-registry-access
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    service: graphql
+  name: graphql
+spec:
+  ports:
+    - name: "4000"
+      port: 4000
+      targetPort: 4000
+  selector:
+    service: graphql
